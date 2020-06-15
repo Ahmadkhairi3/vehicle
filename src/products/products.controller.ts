@@ -8,40 +8,16 @@ import {
     Delete,
 
   } from '@nestjs/common';
-  import {Vehicle} from './products.model'
   import {UpdateVehicleInput, CreateVehicleInput,CreateVehicleResponse} from './product.dto'
   import { VehicleService} from './product.service';
-  import {ApiBearerAuth, ApiOperation, ApiBody , ApiResponse} from '@nestjs/swagger';
-import {  } from 'querystring';
-import {UserId} from './user.decorators'
+
 
 
   @Controller('vehicle')
   export class VehicleController {
     constructor(private readonly vehicleService: VehicleService) {}
   
-   /* async createVehicle(
-      @Body() createVehicleInput: CreateVehicleInput,
-      @Body('vehicleNo') vehicleNo,
-      @Body('vehicleModel') vehicleModel,
-      @Body('vehicleMake') vehicleMake,
-      @Body('vehicleColor') vehicleColor,
-      @Body ('vehicleType') vehicleType
-    ) {
-      return this.vehicleService.createVehicle(vehicleNo, vehicleModel,vehicleMake,vehicleColor,vehicleType);
-    }*/
-    @Post()
-    async createVehicle(
-      @Body() createVehicleInput: CreateVehicleInput,
-      @Body('vehicleNo') vehicleNo,
-      @Body('vehicleModel') vehicleModel,
-      @Body('vehicleMake') vehicleMake,
-      @Body('vehicleColor') vehicleColor,
-      @Body ('vehicleType') vehicleType,
   
-    ) {
-      return this.vehicleService.insertVehicle (createVehicleInput, createVehicleInput.vehicleNo ,createVehicleInput.vehicleModel,createVehicleInput.vehicleMake,createVehicleInput.vehicleColor,createVehicleInput.vehicleType);
-    }
 
     @Post()
     async addVehicle(
@@ -64,9 +40,9 @@ import {UserId} from './user.decorators'
       return { id : generatedId  };
     }
   
-    @Get()
-    async getAllVehicle() {
-      const vehicle = await this.vehicleService.getVehicle();
+    @Get(':id')
+    async getAllVehicle(@Param('id') vehicleId: string) {
+      const vehicle = await this.vehicleService.getVehicle(vehicleId);
       return vehicle;
     }
   
@@ -78,11 +54,12 @@ import {UserId} from './user.decorators'
   
     @Patch(':id')
     async updateVehicle(
+      @Param('id') userId: string,
       @Body() updateVehicleInput: UpdateVehicleInput,
-      @Param('Id') userId: string,
+      
      
     ): Promise<CreateVehicleResponse> {
-      return this.vehicleService.updateVehicle(updateVehicleInput, userId);
+      return this.vehicleService.updateVehicle( userId, updateVehicleInput);
     }
   
     @Delete(':id')

@@ -67,7 +67,7 @@ export class VehicleService {
     return result.id as string;
   }
 
-  async getVehicle()  {
+  async getVehicle(vehicleId: string)  {
     const vehicles = await this.vehicleModel.find().exec();
     return vehicles.map(vehicle => ({
       id: vehicle.id,
@@ -79,45 +79,19 @@ export class VehicleService {
     }));
   }
 
-  async getSingleVehicle(vehicleId: string)  {
+  async getSingleVehicle(vehicleId: string): Promise<CreateVehicleResponse> {
     const vehicle = await this.findVehicle(vehicleId);
     return {
       id: vehicle.id,
-      no: vehicle.vehicleNo,
-      model: vehicle.vehicleModel,
-      make: vehicle.vehicleMake,
-      color: vehicle.vehicleColor,
-      type: vehicle.vehicleType,
+      vehicleNo: vehicle.vehicleNo,
+      vehicleModel: vehicle.vehicleModel,
+      vehicleMake: vehicle.vehicleMake,
+      vehicleColor: vehicle.vehicleColor,
+      vehicleType: vehicle.vehicleType,
     };
   }
 
- /* async updateVehicle (
-    vehicleId: string,
-    no: string,
-    model: string,
-    make: string,
-    color:string,
-    type:string
-  )  {
-    const updatedVehicle = await this.findVehicle(vehicleId);
-    if (no) {
-      updatedVehicle.vehicleNo = no;
-    }
-    if (model) {
-      updatedVehicle.vehicleModel = model;
-    }
-    if (make) {
-      updatedVehicle.vehicleMake = make;
-    }
-    if (color) {
-      updatedVehicle.vehicleColor = color;
-    }
-    if (type) {
-      updatedVehicle.vehicleType = type;
-    }
-    updatedVehicle.save();
-  }
-*/
+
   async deleteVehicle(userId: string) {
     const result = await this.vehicleModel.deleteOne({_id: userId}).exec();
     if (result.n === 0) {
@@ -140,31 +114,28 @@ export class VehicleService {
 
 
   async updateVehicle(
-    data: UpdateVehicleInput,
+    
     userId: string,
-
+    data: UpdateVehicleInput,
   ): Promise<CreateVehicleResponse> {
-    const vehicle = await this.vehicleModel.findOne({userId});
-
-
+    const vehicle = await this.vehicleModel.findOne({_id : userId});
+    console.log(vehicle)
     if (vehicle) {
 
-      vehicle.vehicleNo = data.vehicleNo;
-      vehicle.vehicleColor = data.vehicleColor;
-      vehicle.vehicleMake = data.vehicleMake;
-      vehicle.vehicleModel = data.vehicleModel;
-      vehicle.vehicleType = data.vehicleType;
+      vehicle.vehicleNo = data.vehicleNo ? data.vehicleNo : vehicle.vehicleNo;
+      vehicle.vehicleColor = data.vehicleColor ? data.vehicleColor : vehicle.vehicleColor;
+      vehicle.vehicleMake = data.vehicleMake ? data.vehicleMake : vehicle.vehicleMake;
+      vehicle.vehicleModel = data.vehicleModel ? data.vehicleModel : vehicle.vehicleModel;
+      vehicle.vehicleType = data.vehicleType ? data.vehicleType : vehicle.vehicleType;
 
       vehicle.save();
 
       return db2api(vehicle);
-    }
-
+    }else {
+      throw new NotFoundException(`Vehicle number ${userId} does not exist`)
+  
   }
 
  
-  }
-
-
-
-
+}
+}

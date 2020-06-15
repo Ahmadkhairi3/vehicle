@@ -1,7 +1,6 @@
 import * as express from 'express';
 import {Validator} from 'class-validator';
-import {parse as parseUrl} from 'url';
-import * as config from 'config';
+
 
 export const validator = new Validator();
 

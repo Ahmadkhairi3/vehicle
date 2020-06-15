@@ -9,19 +9,16 @@ import {
   IsString,
   IsDateString,
 } from 'class-validator';
-import {carPlateNumberRegex, cardExpiryDateRegex, getStringEnumValues} from 'src/helpers/helpers';
 import {VehicleTypesEnum} from './product.enum';
 
 export class CreateVehicleInput {
-  @Matches(carPlateNumberRegex, {
-    message: 'platNumber must contain only uppercase letters and numbers',
-  })
+  
   @ApiProperty({
     type: 'string',
     description: 'vehicle car plate number',
     example: 'ABC1234',
   })
-  vehicleNo: string;
+  vehicleNo?: string;
 
   @IsOptional()
   @IsString()
@@ -117,21 +114,13 @@ export class CreateVehicleResponse {
   })
   id: string;
 
-  @Matches(carPlateNumberRegex, {
-    message: 'platNumber must contain only uppercase letters and numbers',
-  })
+
   @ApiProperty({
     type: 'string',
     description: 'vehicle car plate number',
   })
   vehicleNo?: string;
 
-  @IsString()
-  @ApiPropertyOptional({
-    type: 'string',
-    description: 'vehicle fleet userId',
-  })
-  userId?: string;
 
   @IsOptional()
   @ApiPropertyOptional({
@@ -146,6 +135,14 @@ export class CreateVehicleResponse {
     description: 'Vehicle color',
   })
   vehicleColor: string;
+
+  @ApiProperty({
+    type: 'string',
+    description: 'Vehicle make',
+    example: 'X70',
+  })
+  vehicleMake?: string;
+
 
   @IsEnum(VehicleTypesEnum)
   @ApiPropertyOptional({
