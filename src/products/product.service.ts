@@ -4,8 +4,8 @@ import { Model } from 'mongoose';
 import {CreateVehicleResponse, CreateVehicleInput, UpdateVehicleInput} from './product.dto'
 import {db2api} from './product.data.prettyfier'
 import {VehicleTypesEnum} from './product.enum'
-import {UserId} from './user.decorators'
 import { Vehicle} from './products.model';
+import { CreateVehicleResponseMock} from './product.mocks'
 
 
 @Injectable()
@@ -20,7 +20,7 @@ export class VehicleService {
     userId: string,
   ): Promise<CreateVehicleResponse> {
     if (!userId) {
-      userId = createVehicleInput.userId;
+      userId = createVehicleInput.id;
     }
 
     const existingVehicle = await this.vehicleModel
@@ -91,6 +91,16 @@ export class VehicleService {
     };
   }
 
+  async getMockedSingleVehicle(MockedId: string): Promise<CreateVehicleResponse> {
+    const vehicle = await this.findVehicle(MockedId);
+    return {
+      id: vehicle.id,
+      vehicleNo: vehicle.vehicleNo,
+      vehicleModel: vehicle.vehicleModel,
+      vehicleColor: vehicle.vehicleColor,
+      vehicleType: vehicle.vehicleType,
+    };
+  }
 
   async deleteVehicle(userId: string) {
     const result = await this.vehicleModel.deleteOne({_id: userId}).exec();

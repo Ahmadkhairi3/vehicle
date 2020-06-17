@@ -10,6 +10,7 @@ import {
   } from '@nestjs/common';
   import {UpdateVehicleInput, CreateVehicleInput,CreateVehicleResponse} from './product.dto'
   import { VehicleService} from './product.service';
+  import { CreateVehicleResponseMock} from './product.mocks'
 
 
 
@@ -40,9 +41,9 @@ import {
       return { id : generatedId  };
     }
   
-    @Get(':id')
-    async getAllVehicle(@Param('id') vehicleId: string) {
-      const vehicle = await this.vehicleService.getVehicle(vehicleId);
+    @Get()
+    async getAllVehicle(userId) {
+      const vehicle = await this.vehicleService.getVehicle(userId);
       return vehicle;
     }
   
@@ -51,14 +52,16 @@ import {
       return this.vehicleService.getSingleVehicle(userId);
     }
    
+    @Get(':id')
+    getMockedVehicle(@Param('id') userId: string) {
+      return this.vehicleService.getMockedSingleVehicle(userId);
+    }
+   
   
     @Patch(':id')
     async updateVehicle(
       @Param('id') userId: string,
-      @Body() updateVehicleInput: UpdateVehicleInput,
-      
-     
-    ): Promise<CreateVehicleResponse> {
+      @Body() updateVehicleInput: UpdateVehicleInput): Promise<CreateVehicleResponse> {
       return this.vehicleService.updateVehicle( userId, updateVehicleInput);
     }
   

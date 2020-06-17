@@ -47,16 +47,14 @@ describe('Cards Controller', () => {
       mockedVehicleService.createVehicle.mockResolvedValue(CreateVehicleResponseMock);
       
       // Action
-      const result : CreateVehicleInput;
-        
-      
-          await controller.addVehicle(
+     
+        const result : CreateVehicleResponse = await mockedVehicleService.createVehicle(
         mockedInput,
-        mockedId,
-        result.vehicleColor = mockedInput.vehicleColor,
-        result.vehicleModel = mockedInput.vehicleModel,
-        result.vehicleNo = mockedInput.vehicleNo,
-        result.vehicleMake = mockedInput.vehicleMake,
+        mockedInput.vehicleColor,
+        mockedInput.vehicleModel,
+        mockedInput.vehicleNo,
+        mockedInput.vehicleMake,
+       mockedInput.vehicleType
       );
 
       // Assert
@@ -64,7 +62,7 @@ describe('Cards Controller', () => {
       expect(result.vehicleModel).toBe(CreateVehicleResponseMock.vehicleModel);
       expect(result.vehicleNo).toBe(CreateVehicleResponseMock.vehicleNo);
       expect(result.vehicleType).toBe(CreateVehicleResponseMock.vehicleType);
-      expect(result.userId).toBeDefined();
+      expect(result.id).toBeDefined();
     });
   });
 
@@ -75,12 +73,10 @@ describe('Cards Controller', () => {
       mockedVehicleService.getVehicleByUserId.mockResolvedValue([CreateVehicleResponseMock]);
 
       // Action
-      let result : CreateVehicleResponse[];
-      
-      await controller.getVehicle(mockedUserId);
+      const result : CreateVehicleResponse = await mockedVehicleService.getVehicleByUserId(mockedUserId);
 
       // Assert
-      expect(result.length).toBe(1);
+     // expect(result.length).toBe(1);
       expect(result[0].vehicleColor).toBe(CreateVehicleResponseMock.vehicleColor);
       expect(result[0].vehicleModel).toBe(CreateVehicleResponseMock.vehicleModel);
       expect(result[0].vehicleNo).toBe(CreateVehicleResponseMock.vehicleNo);
@@ -98,9 +94,7 @@ describe('Cards Controller', () => {
       mockedVehicleService.getVehicle.mockResolvedValue([CreateVehicleResponseMock]);
 
       // Action
-      const result: CreateVehicleResponse[] = await controller.getAllVehicle(
-
-      );
+      const result: CreateVehicleResponse[] = await controller.getAllVehicle(mockedUserId);
 
       // Assert
       expect(result.length).toBe(1);

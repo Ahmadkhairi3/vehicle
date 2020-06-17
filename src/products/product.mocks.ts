@@ -4,6 +4,7 @@ import {VehicleTypesEnum} from './product.enum';
 export const CreateVehicleResponseMock: CreateVehicleResponse = {
   id: 'some-id',
   vehicleNo: 'some-number',
+  vehicleMake:'some-make',
   vehicleColor: 'some-color',
   vehicleModel: 'some-model',
   vehicleType: VehicleTypesEnum.hacthback,

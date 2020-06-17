@@ -13,20 +13,20 @@ import {VehicleTypesEnum} from './product.enum';
 
 export class CreateVehicleInput {
   
-  @ApiProperty({
-    type: 'string',
-    description: 'vehicle car plate number',
-    example: 'ABC1234',
-  })
-  vehicleNo?: string;
-
   @IsOptional()
   @IsString()
   @ApiPropertyOptional({
     type: 'string',
     description: 'vehicle fleet userId',
   })
-  userId?: string;
+  id?: string;
+
+  @ApiProperty({
+    type: 'string',
+    description: 'vehicle car plate number',
+    example: 'ABC1234',
+  })
+  vehicleNo?: string;
 
   @IsOptional()
   @ApiPropertyOptional({
@@ -119,7 +119,7 @@ export class CreateVehicleResponse {
     type: 'string',
     description: 'vehicle car plate number',
   })
-  vehicleNo?: string;
+  vehicleNo: string;
 
 
   @IsOptional()
